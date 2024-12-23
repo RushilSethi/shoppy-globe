@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background-color: #F9FAFB; /* Light Gray */
+  --container-color: #FFFFFF; /* White */
+  --text-primary-color: #374151; /* Charcoal */
+  --text-secondary-color: #6B7280; /* Cool Gray */
+  --accent-primary-color: #2563EB; /* Royal Blue */
+  --accent-secondary-color: #FBBF24; /* Soft Gold */
+}

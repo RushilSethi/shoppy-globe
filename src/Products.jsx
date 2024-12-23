@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setProducts } from "./store/productSlice";
 import { fetchProducts } from "./store/fetchProducts";
@@ -21,9 +21,9 @@ const Products = () => {
   }, [dispatch]);
 
   return (
-    <div className="products-container">
+    <div className="p-6 mt-10">
       {loading ? (
-        <div className="loader" style={{ textAlign: "center", margin: "20px 0" }}>
+        <div className="flex items-center justify-center w-full h-full">
             {/* loader */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -52,7 +52,7 @@ const Products = () => {
           </svg>
         </div>
       ) : (
-        <div className="products-list">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {products.map((product) => (
             <ProductItem key={product.id} product={product} />
           ))}

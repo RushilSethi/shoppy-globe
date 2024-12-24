@@ -1,12 +1,17 @@
+import CartPage from "./CartPage";
 import Footer from "./Footer";
+import HomePage from "./HomePage";
 import Navbar from "./Navbar"
-import Products from "./Products";
+import ProductDetails from "./ProductDetails";
+
 
 function App() {
   return (
     <>
       <Navbar />
-      <Products />
+      {/* <HomePage /> */}
+      {/* <CartPage /> */}
+      <ProductDetails />
       <Footer />
     </>
   )

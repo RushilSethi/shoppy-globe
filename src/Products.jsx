@@ -3,11 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { setProducts } from "./store/productSlice";
 import { fetchProducts } from "./store/fetchProducts";
 import ProductItem from "./ProductItem";
+import { Link } from "react-router-dom";
 
 const Products = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products.items);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const getProducts = async () => {
@@ -20,17 +22,29 @@ const Products = () => {
     getProducts();
   }, [dispatch]);
 
+  const filteredProducts = products.filter((product) =>
+    product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    product.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <div className="p-6">
+    <div className="p-6 mt-10">
+      {/* Search Bar */}
+      <div className="mb-6">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search products..."
+          className="w-full p-2 border border-gray-300 rounded-md"
+        />
+      </div>
+
       {loading ? (
         <div className="flex items-center justify-center w-full h-full">
-            {/* loader */}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 300 150"
-            width="100"
-            height="50"
-          >
+          {/* Loader */}
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150" width="100" height="50">
             <path
               fill="none"
               stroke="#3C343B"
@@ -53,8 +67,10 @@ const Products = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:px-16">
-          {products.map((product) => (
-            <ProductItem key={product.id} product={product} />
+          {filteredProducts.map((product) => (
+            <Link to={`/product/${product.id}`} key={product.id}>
+              <ProductItem product={product} />
+            </Link>
           ))}
         </div>
       )}

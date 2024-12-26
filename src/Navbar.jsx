@@ -60,10 +60,13 @@ const Navbar = () => {
               ${isOpen ? "flex" : "hidden"}`}
       >
         <div className="text-primary hover:text-accentPrimary transition duration-200 ease-in cursor-pointer">
-          Home
+          <Link to="/">Home</Link>
         </div>
         <div className="text-primary hover:text-accentSecondary transition duration-200 ease-in cursor-pointer">
-          Cart
+        <Link to="/cart">Cart</Link>
+        </div>
+        <div className="text-primary hover:text-accentPrimary transition duration-200 ease-in cursor-pointer">
+        <Link to="/orders-list">My Orders</Link>
         </div>
       </div>
     </nav>

@@ -18,23 +18,34 @@ const OrderPage = () => {
     name: "",
     address: "",
     contact: "",
-    totalBill: totalBill,
   });
+  const [error, setError] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setOrderDetails((prev) => ({ ...prev, [name]: value }));
+    if (error) setError("");
+  };
+
+  const validateForm = () => {
+    if (!orderDetails.name.trim()) return "Name is required.";
+    if (!orderDetails.address.trim()) return "Address is required.";
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!emailRegex.test(orderDetails.contact.trim())) return "Invalid email address.";
+    return "";
   };
 
   const handlePlaceOrder = () => {
-    if (orderDetails.name && orderDetails.address && orderDetails.contact) {
-      alert("Order placed successfully!");
-      dispatch(clearCart());
-      dispatch(addOrder({...orderDetails, ...cartItems}));
-      navigate("/");
-    } else {
-      alert("Please fill in all the details to place your order.");
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return;
     }
+
+    alert("Order placed successfully!");
+    dispatch(clearCart());
+    dispatch(addOrder({ ...orderDetails, totalBill, items: cartItems }));
+    navigate("/");
   };
 
   if (!cartItems || cartItems.length === 0) {
@@ -50,7 +61,7 @@ const OrderPage = () => {
       <h2 className="text-xl font-bold mb-6">Order Details</h2>
       <p className="text-lg mb-4">Total Bill: ${totalBill.toFixed(2)}</p>
 
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
         <div>
           <label className="block text-sm text-secondary mb-1">Name</label>
           <input
@@ -58,9 +69,10 @@ const OrderPage = () => {
             name="name"
             value={orderDetails.name}
             onChange={handleInputChange}
-            className="w-full p-2 border rounded"
+            className={`w-full p-2 border rounded ${
+              error.includes("Name") ? "border-red-500" : "border-gray-300"
+            }`}
             placeholder="Enter your name"
-            required
           />
         </div>
         <div>
@@ -70,9 +82,10 @@ const OrderPage = () => {
             name="address"
             value={orderDetails.address}
             onChange={handleInputChange}
-            className="w-full p-2 border rounded"
+            className={`w-full p-2 border rounded ${
+              error.includes("Address") ? "border-red-500" : "border-gray-300"
+            }`}
             placeholder="Enter your address"
-            required
           />
         </div>
         <div>
@@ -82,12 +95,15 @@ const OrderPage = () => {
             name="contact"
             value={orderDetails.contact}
             onChange={handleInputChange}
-            className="w-full p-2 border rounded"
+            className={`w-full p-2 border rounded ${
+              error.includes("email") ? "border-red-500" : "border-gray-300"
+            }`}
             placeholder="Enter your email ID"
-            required
           />
         </div>
       </form>
+
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 
       <div className="mt-6 text-center">
         <button

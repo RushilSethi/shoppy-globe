@@ -34,28 +34,29 @@ const MyOrders = () => {
             >
               <h3 className="text-xl font-semibold">Order ID: {order.id}</h3>
               <p>
+                <strong>Name:</strong> {order.name}
+              </p>
+              <p>
+                <strong>Contact:</strong> {order.contact}
+              </p>
+              <p>
                 <strong>Total Amount:</strong> ${order.totalBill}
               </p>
               <p>
-                <strong>Order Date:</strong> {new Date(order.id).toLocaleDateString()}
+                <strong>Order Date:</strong>{" "}
+                {new Date(order.id).toLocaleDateString()}
               </p>
               <h4 className="mt-2 font-medium">Items:</h4>
 
-              {/* Assuming `order` has individual products stored like `order[0]`, `order[1]`, etc. */}
               <ul className="list-disc pl-5">
-                {Object.keys(order)
-                  .filter((key) => !isNaN(key)) // Filter out non-numeric keys (e.g., 'id', 'address')
-                  .map((key) => {
-                    const item = order[key]; // Each order item (like '0', '1')
-                    return (
-                      <li key={item.id}>
-                        <div>
-                          <strong>{item.title}</strong> x{item.quantity} - $
-                          {item.price * item.quantity}
-                        </div>
-                      </li>
-                    );
-                  })}
+                {order.items.map((item) => (
+                  <li key={item.id}>
+                    <div>
+                      <strong>{item.title}</strong>  
+                      - ${(item.price).toFixed(2)} x {item.quantity}
+                    </div>
+                  </li>
+                ))}
               </ul>
             </div>
           ))}
@@ -63,8 +64,6 @@ const MyOrders = () => {
       ) : (
         <p className="text-center text-secondary">You have no orders yet.</p>
       )}
-
-      {/* Clear Orders Button */}
     </div>
   );
 };

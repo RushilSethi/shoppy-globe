@@ -14,7 +14,7 @@ const CartItem = ({ item }) => {
   }
 
   return (
-    <div className="flex items-center justify-between p-4 bg-background rounded-lg">
+    <div className="flex items-center justify-between p-4 bg-background rounded-lg flex-col md:flex-row">
       {/* Product Image */}
       <div className="flex items-center gap-4">
         <img

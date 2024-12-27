@@ -5,26 +5,33 @@ import App from './App.jsx'
 import { Provider } from 'react-redux'
 import productStore from './store/productStore.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { Suspense, lazy } from 'react'
+import Loader from './Loader.jsx';
 import HomePage from './HomePage.jsx'
-import CartPage from './CartPage.jsx'
-import ProductDetails from './ProductDetails.jsx'
 import NotFound from './NotFound.jsx'
 import ErrorElement from './ErrorElement.jsx'
-import OrderPage from './OrderPage.jsx'
-import MyOrders from './MyOrders.jsx'
+
+const CartPage = lazy(() => import('./CartPage.jsx'))
+const ProductDetails = lazy(() => import('./ProductDetails.jsx'))
+const OrderPage = lazy(() => import('./OrderPage.jsx'))
+const MyOrders = lazy(() => import('./MyOrders.jsx'))
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: <ErrorElement />,
+    errorElement: (
+      <Suspense fallback={<Loader />}>
+        <ErrorElement />
+      </Suspense>
+    ),
     children: [
       {path: "/", element: <HomePage />},
-      {path: "/cart", element: <CartPage />},
-      {path: "/product", element: <NotFound />},
-      {path: "/product/:id", element: <ProductDetails />},
-      {path: "/order", element: <OrderPage />},
-      {path: "/orders-list", element: <MyOrders />}
+      {path: "/cart", element: <Suspense fallback={<Loader />}><CartPage /></Suspense>},
+      {path: "/product", element: <Suspense fallback={<Loader />}><NotFound /></Suspense>},
+      {path: "/product/:id", element: <Suspense fallback={<Loader />}><ProductDetails /></Suspense>},
+      {path: "/order", element: <Suspense fallback={<Loader />}><OrderPage /></Suspense>},
+      {path: "/orders-list", element: <Suspense fallback={<Loader />}><MyOrders /></Suspense>}
     ],
   },  
 ])
@@ -32,7 +39,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={productStore}>
-    <RouterProvider router={router}/>
+      <Suspense fallback={<Loader />}>
+        <RouterProvider router={router}/>
+      </Suspense>
     </Provider>
-  </StrictMode>,
+  </StrictMode>
 )

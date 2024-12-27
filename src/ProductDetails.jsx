@@ -54,7 +54,7 @@ const ProductDetails = () => {
             <img
               src={product.images[0] || placeholderImage}
               alt={product.title}
-              className="w-full max-w-[30vw] h-auto object-cover rounded-lg"
+              className="w-full max-w-[30vw] h-auto max-h-[30rem] object-contain mx-auto rounded-lg"
             />
           </div>
         </div>
